@@ -70,13 +70,24 @@ class EventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def event_params
-      params.require(:event).permit(:name, :description, :location, :capacity, :status, :phone, :email, :url, :user_id)
+      params.require(:event)
+      .permit(:name,
+              :description,
+              :location,
+              :capacity,
+              :status,
+              :phone,
+              :email,
+              :url,
+              :user_id,
+              :event_cover
+            )
     end
 
     # Protecting Routes only ~> The current User can make the change on the events
     def protecting_routing
       if @event.user != current_user
-        redirect_to events_url, notice: "Sorry, can't perform this action :("
+        redirect_to events_url, notice: "#{current_user.email}! You won't access to this product"
       end
     end
 end
